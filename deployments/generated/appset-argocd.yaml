@@ -5,7 +5,7 @@ spec:
     - clusters:
         selector:
           matchLabels:
-            cluster.tnnova.io/argocd: enabled
+            cluster.example.com/argocd: enabled
   template:
     metadata:
       name: argocd-{{ name }}

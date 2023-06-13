@@ -15,7 +15,7 @@ applicationSet: [ID=string]: {
 	}
 	spec: {
 		generators: [{
-			clusters: selector: matchLabels: "cluster.tnnova.io/\(ID)": "enabled"
+			clusters: selector: matchLabels: "cluster.example.com/\(ID)": "enabled"
 		}]
 		template: {
 			metadata: name: "\(ID)-{{ name }}"
