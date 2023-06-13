@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "grafana-agent-{{ .Values.agentType }}"
+data:
+  config.river: |-
+{{ if eq .Values.agentType "logs" }}{{ .Files.Get "config/logs.river" | indent 4 }}{{ end }}
+{{ if eq .Values.agentType "events" }}{{ .Files.Get "config/events.river" | indent 4 }}{{ end }}

@@ -1,0 +1,43 @@
+clusterName: p-stateful
+agentType: events
+targetHost: https://loki.example.com/loki/api/v1/push
+grafana-agent:
+  controller:
+    type: statefulset
+    volumes:
+      extra:
+        - name: remote-write-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  audience: observability
+                  expirationSeconds: 3600
+                  path: token
+    volumeClaimTemplates:
+      - metadata:
+          name: events
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Gi
+  agent:
+    storagePath: etc/storage/agent
+    mounts:
+      extra:
+        - name: remote-write-token
+          mountPath: /run/secrets/remote-write
+          readOnly: true
+    configMap:
+      create: false
+      name: grafana-agent-events
+      key: config.river
+    extraEnv:
+      - name: CLUSTER_NAME
+        value: p-stateful
+      - name: LOKI_ENDPOINT
+        value: https://loki.example.com/loki/api/v1/push
+    extra:
+      - name: events
+        mountPath: /etc/storage/agent

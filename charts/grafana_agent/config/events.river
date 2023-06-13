@@ -1,0 +1,32 @@
+loki.source.kubernetes_events "cluster" {
+	forward_to = [loki.process.local.receiver]
+}
+
+loki.process "local" {
+	forward_to = [loki.relabel.stream.receiver]
+
+	stage.label_drop {
+		values = ["instance", "job"]
+	}
+}
+
+loki.relabel "stream" {
+	forward_to = [loki.write.endpoint.receiver]
+
+	rule {
+		action       = "replace"
+		target_label = "stream"
+		replacement  = "k8s-events"
+	}
+}
+
+loki.write "endpoint" {
+	external_labels = {
+		cluster = env("CLUSTER_NAME"),
+	}
+
+	endpoint {
+		url               = env("LOKI_ENDPOINT")
+		bearer_token_file = "/run/secrets/remote-write/token"
+	}
+}

@@ -1,0 +1,33 @@
+clusterName: t-stateful
+agentType: logs
+targetHost: https://loki.test.example.com/loki/api/v1/push
+grafana-agent:
+  tolerations:
+    - operator: Exists
+      effect: NoSchedule
+  controller:
+    volumes:
+      extra:
+        - name: remote-write-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  audience: observability
+                  expirationSeconds: 3600
+                  path: token
+  agent:
+    mounts:
+      varlog: true
+      extra:
+        - name: remote-write-token
+          mountPath: /run/secrets/remote-write
+          readOnly: true
+    configMap:
+      create: false
+      name: grafana-agent-logs
+      key: config.river
+    extraEnv:
+      - name: CLUSTER_NAME
+        value: t-stateful
+      - name: LOKI_ENDPOINT
+        value: https://loki.test.example.com/loki/api/v1/push

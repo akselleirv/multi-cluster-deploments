@@ -1,0 +1,49 @@
+discovery.kubernetes "k8s" {
+	role = "pod"
+}
+
+discovery.relabel "k8s" {
+	targets = discovery.kubernetes.k8s.targets
+
+	rule {
+		source_labels = ["__meta_kubernetes_namespace"]
+		target_label  = "namespace"
+	}
+
+	rule {
+		source_labels = ["__meta_kubernetes_pod_container_name"]
+		target_label  = "container"
+	}
+
+	rule {
+		source_labels = ["__meta_kubernetes_pod_name"]
+		target_label  = "pod"
+	}
+
+	rule {
+		source_labels = ["__meta_kubernetes_pod_uid", "__meta_kubernetes_pod_container_name"]
+		target_label  = "__path__"
+		separator     = "/"
+		replacement   = "/var/log/pods/*$1/*.log"
+	}
+}
+
+discovery.file "pods" {
+	path_targets = discovery.relabel.k8s.output
+}
+
+loki.source.file "pods" {
+	targets    = discovery.file.pods.targets
+	forward_to = [loki.write.endpoint.receiver]
+}
+
+loki.write "endpoint" {
+	external_labels = {
+		cluster = env("CLUSTER_NAME"),
+	}
+
+	endpoint {
+		url               = env("LOKI_ENDPOINT")
+		bearer_token_file = "/run/secrets/remote-write/token"
+	}
+}

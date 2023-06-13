@@ -1,0 +1,7 @@
+apiVersion: v2
+dependencies:
+    - name: grafana-agent
+      repository: https://grafana.github.io/helm-charts
+      version: 0.15.0
+name: grafana-agent
+version: 0.0.1
