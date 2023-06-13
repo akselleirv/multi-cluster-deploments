@@ -55,7 +55,7 @@ command: bootstrap: {
 				server: clusterCfg.clusterMetadata.Server
 				config: json.Marshal({
 					tlsClientConfig: {
-						insecure: false
+						insecure: false // since we are using kind
 						caData:   clusterCfg.clusterMetadata.CAData
 						keyData:  clusterCfg.clusterMetadata.KeyData
 						certData: clusterCfg.clusterMetadata.CertData
