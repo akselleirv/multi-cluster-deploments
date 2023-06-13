@@ -21,7 +21,7 @@ spec:
       destination:
         server: '{{ server }}'
         namespace: argocd
-      project: cluster-addons
+      project: default
       syncPolicy:
         automated:
           prune: true

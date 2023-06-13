@@ -20,7 +20,7 @@ applicationSet: [ID=string]: {
 		template: {
 			metadata: name: "\(ID)-{{ name }}"
 			spec: {
-				project: "cluster-addons"
+				project: "default"
 				source: {
 					_ID:            strings.Replace(ID, "-", "_", -1)
 					repoURL:        "https://github.com/akselleirv/multi-cluster-deploments.git"
