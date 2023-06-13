@@ -10,7 +10,7 @@ cluster: "p-stateful": {
 
 	addon: {
 		"redis_operator": redis_operator.#Chart & {
-			values: "latest": _
+			values: _
 		}
 	}
 }

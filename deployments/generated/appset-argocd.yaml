@@ -1,0 +1,33 @@
+metadata:
+  name: argocd
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            cluster.tnnova.io/argocd: enabled
+  template:
+    metadata:
+      name: argocd-{{ name }}
+    spec:
+      source:
+        repoURL: https://github.com/akselleirv/multi-cluster-deploments.git
+        targetRevision: HEAD
+        path: charts/argocd
+        helm:
+          releaseName: argocd
+          valueFiles:
+            - generated_values/{{ name }}_argocd.yaml
+      destination:
+        server: '{{ server }}'
+        namespace: argocd
+      project: cluster-addons
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - FailOnSharedResource=true
+kind: ApplicationSet
+apiVersion: argoproj.io/v1alpha1

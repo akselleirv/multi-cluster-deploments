@@ -1,5 +1,5 @@
-clusterName: p-services
 agentType: events
+clusterName: p-services
 targetHost: https://loki.example.com/loki/api/v1/push
 grafana-agent:
   controller:

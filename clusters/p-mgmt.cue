@@ -9,7 +9,7 @@ cluster: "p-mgmt": {
 
 	addon: {
 		"argocd": argocd.#Chart & {
-			values: "latest": _
+			values:  _
 		}
 	}
 }

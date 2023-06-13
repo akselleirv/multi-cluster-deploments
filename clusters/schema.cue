@@ -2,7 +2,6 @@ package clusters
 
 import (
 	"strings"
-	"encoding/json"
 
 	"github.com/akselleirv/multi-cluster-deployments/charts/grafana_agent"
 	"github.com/akselleirv/multi-cluster-deployments/clustermetadata"
@@ -26,7 +25,7 @@ cluster: [ClusterName=string]: #Cluster & {
 
 	addon: {
 		"grafana_agent_events": grafana_agent.#Chart & {
-			values: "latest": {
+			values: {
 				clusterName: _name
 				agentType:   "events"
 
@@ -39,7 +38,7 @@ cluster: [ClusterName=string]: #Cluster & {
 			}
 		}
 		"grafana_agent_logs": grafana_agent.#Chart & {
-			values: "latest": {
+			values: {
 				clusterName: _name
 				agentType:   "logs"
 
@@ -50,28 +49,6 @@ cluster: [ClusterName=string]: #Cluster & {
 					targetHost: "https://loki.test.example.com/loki/api/v1/push"
 				}
 			}
-		}
-	}
-
-	extraManifests: "argocd-secret-\(_name)": {
-		apiVersion: "v1"
-		kind:       "Secret"
-		metadata: {
-			name:      _name
-			namespace: "argocd"
-			labels: "argocd.argoproj.io/secret-type": "cluster"
-		}
-		stringData: {
-			name:   _name
-			server: clusterMetadata.Server
-			config: json.Marshal({
-				tlsClientConfig: {
-					insecure: false
-					caData:   clusterMetadata.CAData
-					keyData:  clusterMetadata.KeyData
-					certData: clusterMetadata.CertData
-				}
-			})
 		}
 	}
 }

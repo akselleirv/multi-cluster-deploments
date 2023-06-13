@@ -2,7 +2,7 @@ package grafana_agent
 
 #Chart: {
 	chartName: "grafana_agent"
-	values: latest?: {
+	values: {
 
 		agentType:   "logs" | "events"
 		clusterName: string

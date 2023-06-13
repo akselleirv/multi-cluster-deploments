@@ -1,0 +1,3 @@
+package deployments
+
+applicationSet: argocd: {}

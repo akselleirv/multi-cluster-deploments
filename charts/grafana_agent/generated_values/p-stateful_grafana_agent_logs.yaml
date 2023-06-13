@@ -1,5 +1,5 @@
-clusterName: p-stateful
 agentType: logs
+clusterName: p-stateful
 targetHost: https://loki.example.com/loki/api/v1/push
 grafana-agent:
   tolerations:

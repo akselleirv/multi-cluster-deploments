@@ -1,5 +1,5 @@
-clusterName: p-mgmt
 agentType: logs
+clusterName: p-mgmt
 targetHost: https://loki.example.com/loki/api/v1/push
 grafana-agent:
   tolerations:

@@ -36,3 +36,12 @@ helm install argocd argo/argo-cd -n argocd --create-namespace -f ../charts/argoc
 ```
 cue cmd bootstrap | kubectl apply -f -
 ```
+
+
+## Import Go structs
+
+```
+go get k8s.io/apimachinery
+go get github.com/argoproj/argo-cd/v2
+cue get go github.com/argoproj/argo-cd/v2/pkg/apis/application/v1alpha1
+```
