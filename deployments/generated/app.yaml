@@ -2,18 +2,20 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: argocd
+  namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
+  project: default
   destination:
     namespace: argocd
-    name: argocd
+    server: https://kubernetes.default.svc
   source:
     helm:
       releaseName: argocd
       valueFiles:
-      - p-mgmt_argocd.yaml
-    path: charts/argocd/generated_values
+      - generated_values/p-mgmt_argocd.yaml
+    path: charts/argocd
     repoURL: https://github.com/akselleirv/multi-cluster-deploments.git
     targetRevision: main
   syncPolicy:
