@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: argocd
+    name: argocd
+  source:
+    helm:
+      releaseName: argocd
+      valueFiles:
+      - p-mgmt_argocd.yaml
+    path: charts/argocd/generated_values
+    repoURL: https://github.com/akselleirv/multi-cluster-deploments.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

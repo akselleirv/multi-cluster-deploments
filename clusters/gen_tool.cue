@@ -10,16 +10,6 @@ command: gen: {
 	for clusterName, clusterCfg in cluster {
 		"\(clusterName)": {
 
-			for manifestName, manifest in clusterCfg.extraManifests {
-				"\(manifestName)": {
-					create: file.Create & {
-						$dep:     command.gen.mkdirClusterConfigs.$done
-						filename: "./generated_clusters/\(clusterCfg.environment)/\(manifestName).yaml"
-						contents: yaml.Marshal(manifest)
-					}
-				}
-			}
-
 			let addonText = yaml.Marshal([ for addonName, _ in clusterCfg.addon {addonName}])
 			print: cli.Print & {
 				text: "☸ \(clusterName)\n--------------------------------------\n\(addonText)"
@@ -49,16 +39,8 @@ command: gen: {
 }
 
 command: bootstrap: {
-	for clusterName, clusterCfg in cluster {
-		"\(clusterName)": {
-
-			for manifestName, manifest in clusterCfg.extraManifests {
-				"\(manifestName)": {
-					print: cli.Print & {
-						text: manifest
-					}
-				}
-			}
-		}
+	clusterManifests: [ for clusterName, clusterCfg in cluster for manifestName, manifest in clusterCfg.extraManifests {manifest}]
+	print: cli.Print & {
+		text: yaml.MarshalStream(clusterManifests)
 	}
 }

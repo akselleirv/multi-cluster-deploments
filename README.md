@@ -19,11 +19,20 @@ The three directories that you should care about in the repository are:
 ## Setup clusters
 
 ```
+kind create cluster --name p-services
+kind create cluster --name p-statefulset
 kind create cluster --name p-mgmt
 ```
 
 ## Install ArgoCD
 
 ```
+kubectl ctx kind-p-mgmt
 helm install argocd argo/argo-cd -n argocd --create-namespace -f ../charts/argocd/generated_values/p-mgmt_argocd.yaml
+```
+
+## Install cluster access in mgmt cluster
+
+```
+cue cmd bootstrap | kubectl apply -f -
 ```
