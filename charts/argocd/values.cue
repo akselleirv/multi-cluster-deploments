@@ -21,7 +21,7 @@ package argocd
 					image: "alpine:3.8"
 					command: ["sh", "-c"]
 					workingDir: "/custom-tools"
-					args: ["wget -qO kubelogin.zip https://github.com/Azure/kubelogin/releases/download/v0.0.30/kubelogin-linux-amd64.zip && unzip kubelogin.zip && mv ./bin/linux_amd64/kubelogin . && chmod +x kubelogin"]
+					args: ["wget -qO kubelogin.zip https://github.com/Azure/kubelogin/releases/download/v0.0.30/kubelogin-linux-amd64.zip && unzip kubelogin.zip && mv ./bin/linux_amd64/kubelogin /usr/local/bin && chmod +x kubelogin"]
 				}]
 				volumeMounts: [{
 					mountPath: "/custom-tools"
