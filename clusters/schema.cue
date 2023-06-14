@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/akselleirv/multi-cluster-deployments/charts/grafana_agent"
-	"github.com/akselleirv/multi-cluster-deployments/clustermetadata"
 )
 
 cluster: [ClusterName=string]: #Cluster & {
@@ -14,8 +13,6 @@ cluster: [ClusterName=string]: #Cluster & {
 #Cluster: {
 	_name:       string & =~"\(strings.SliceRunes(environment, 0, 1))-.*"
 	environment: "prod" | "test"
-
-	clusterMetadata: clustermetadata.cluster["kind-\(_name)"]
 
 	addon: [string]: #addon
 	#addon: {
