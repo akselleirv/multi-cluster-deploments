@@ -32,10 +32,14 @@ argo-cd:
           - -c
         workingDir: /custom-tools
         args:
-          - wget -qO kubelogin.zip https://github.com/Azure/kubelogin/releases/download/v0.0.30/kubelogin-linux-amd64.zip && unzip kubelogin.zip && mv ./bin/linux_amd64/kubelogin /usr/local/bin && chmod +x /usr/local/bin/kubelogin
+          - wget -qO kubelogin.zip https://github.com/Azure/kubelogin/releases/download/v0.0.30/kubelogin-linux-amd64.zip && unzip kubelogin.zip && mv ./bin/linux_amd64/kubelogin . && chmod +x kubelogin
+        volumeMounts:
+          - mountPath: /custom-tools
+            name: custom-tools
     volumeMounts:
-      - mountPath: /custom-tools
+      - mountPath: /usr/local/bin/kubelogin
         name: custom-tools
+        subPath: kubelogin
     volumes:
       - name: custom-tools
         emptyDir: {}

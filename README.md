@@ -26,7 +26,7 @@ az group create --location $LOCATION --resource-group $RESOURCE_GROUP
 
 export AKS_CLUSTER_MGMT="p-mgmt"
 
-az aks create -g "${RESOURCE_GROUP}" -n "${AKS_CLUSTER_MGMT}" --enable-oidc-issuer --enable-workload-identity --node-count 1
+az aks create -g "${RESOURCE_GROUP}" -n "${AKS_CLUSTER_MGMT}" --enable-oidc-issuer --enable-workload-identity --node-count 1 --enable-aad
 
 # Output the OIDC issuer URL
 export AKS_OIDC_ISSUER="$(az aks show -n "${AKS_CLUSTER_MGMT}" -g "${RESOURCE_GROUP}" --query "oidcIssuerProfile.issuerUrl" -otsv)"
@@ -34,7 +34,8 @@ export AKS_OIDC_ISSUER="$(az aks show -n "${AKS_CLUSTER_MGMT}" -g "${RESOURCE_GR
 export USER_ASSIGNED_IDENTITY_NAME="mgmtArgoDemoIdentity"
 export FEDERATED_IDENTITY_CREDENTIAL_NAME="mgmtArgoDemoFedIdentity"
 az identity create --name "${USER_ASSIGNED_IDENTITY_NAME}" --resource-group "${RESOURCE_GROUP}" --location "${LOCATION}" --subscription "${SUBSCRIPTION}"
-export USER_ASSIGNED_CLIENT_ID="$(az identity show --resource-group "${RESOURCE_GROUP}" --name "${USER_ASSIGNED_IDENTITY_NAME}" --query 'clientId' -otsv)"
+export USER_ASSIGNED_PRINCIPAL_ID="$(az identity show --resource-group "${RESOURCE_GROUP}" --name "${USER_ASSIGNED_IDENTITY_NAME}" --query 'principalId' -otsv)"
+
 
 # Update the client id in the ArgoCD values file in  `clusters/p-mgmt.cue`
 
@@ -57,7 +58,7 @@ roleRef:
 subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: User
-  name: "${USER_ASSIGNED_CLIENT_ID}"
+  name: "${USER_ASSIGNED_PRINCIPAL_ID}"
 EOF
 
 echo "package clustermetadata\n" > clustermetadata/clustermetadata.gen.cue
@@ -77,7 +78,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 ```
 export AKS_CLUSTER_WORKER="p-services"
-az aks create -g "${RESOURCE_GROUP}" -n "${AKS_CLUSTER_WORKER}" --enable-oidc-issuer --enable-workload-identity --node-count 1
+az aks create -g "${RESOURCE_GROUP}" -n "${AKS_CLUSTER_WORKER}" --enable-oidc-issuer --enable-workload-identity --node-count 1 --enable-aad
 az aks get-credentials -n $AKS_CLUSTER_WORKER -g "${RESOURCE_GROUP}"
 
 # Update metadata file
