@@ -17,7 +17,7 @@ spec:
           skipCrds: true
           releaseName: grafana-agent-events
           valueFiles:
-            - generated_values/{{ name }}_grafana_agent.yaml
+            - generated_values/{{ name }}_grafana_agent_events.yaml
         targetRevision: HEAD
         path: charts/grafana_agent
       project: default

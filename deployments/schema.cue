@@ -31,7 +31,7 @@ applicationSet: [ID=string]: {
 					helm: {
 						releaseName: string | *ID
 						valueFiles: [
-							"generated_values/{{ name }}_\(_chartNameUnderscored).yaml",
+							"generated_values/{{ name }}_\(strings.Replace(ID, "-", "_", -1)).yaml",
 						]
 					}
 				}
