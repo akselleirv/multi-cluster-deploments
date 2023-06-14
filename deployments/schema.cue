@@ -8,6 +8,9 @@ import (
 applicationSet: [string]: argov1alpha1.#ApplicationSet
 
 applicationSet: [ID=string]: {
+	_chartName:            *ID | string
+	_chartNameUnderscored: strings.Replace(_chartName, "-", "_", -1)
+
 	apiVersion: "argoproj.io/v1alpha1"
 	kind:       "ApplicationSet"
 	metadata: {
@@ -22,14 +25,13 @@ applicationSet: [ID=string]: {
 			spec: {
 				project: "default"
 				source: {
-					_ID:            strings.Replace(ID, "-", "_", -1)
 					repoURL:        "https://github.com/akselleirv/multi-cluster-deploments.git"
 					targetRevision: "HEAD"
-					path:           *"charts/\(_ID)" | string
+					path:           *"charts/\(_chartNameUnderscored)" | string
 					helm: {
 						releaseName: string | *ID
 						valueFiles: [
-							"generated_values/{{ name }}_\(_ID).yaml",
+							"generated_values/{{ name }}_\(_chartNameUnderscored).yaml",
 						]
 					}
 				}

@@ -1,0 +1,34 @@
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            cluster.example.com/grafana-agent-logs: enabled
+  template:
+    metadata:
+      name: grafana-agent-logs-{{ name }}
+    spec:
+      destination:
+        server: '{{ server }}'
+        namespace: observability
+      source:
+        repoURL: https://github.com/akselleirv/multi-cluster-deploments.git
+        helm:
+          skipCrds: true
+          releaseName: grafana-agent-logs
+          valueFiles:
+            - generated_values/{{ name }}_grafana_agent.yaml
+        targetRevision: HEAD
+        path: charts/grafana_agent
+      project: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - FailOnSharedResource=true
+metadata:
+  name: grafana-agent-logs
+kind: ApplicationSet
+apiVersion: argoproj.io/v1alpha1
