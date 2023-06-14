@@ -34,7 +34,8 @@ discovery.file "pods" {
 
 loki.source.file "pods" {
 	targets    = discovery.file.pods.targets
-	forward_to = [loki.write.endpoint.receiver]
+	// forward_to = [loki.write.endpoint.receiver]
+	forward_to = [] // do not forward
 }
 
 loki.write "endpoint" {

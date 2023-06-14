@@ -11,13 +11,13 @@ loki.process "local" {
 }
 
 loki.relabel "stream" {
-	forward_to = [loki.write.endpoint.receiver]
-
 	rule {
 		action       = "replace"
 		target_label = "stream"
 		replacement  = "k8s-events"
 	}
+ // forward_to = [loki.write.endpoint.receiver]
+	forward_to = [] // do not forward 
 }
 
 loki.write "endpoint" {
