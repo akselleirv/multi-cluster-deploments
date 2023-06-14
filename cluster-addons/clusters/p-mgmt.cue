@@ -14,7 +14,7 @@ cluster: "p-mgmt": {
 		"argocd": argocd.#Chart & {
 			values: {
 				clientID: "1cf636b4-6914-405f-86f0-337691163a66"
-				clusters: [ for clusterName, clusterCfg in cluster{
+				clusters: [ for clusterName, clusterCfg in cluster {
 					_clusterMetadata: clustermetadata.cluster[clusterName]
 					name:             clusterName
 					caData:           _clusterMetadata.CAData

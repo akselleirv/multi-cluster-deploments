@@ -157,10 +157,3 @@ spec:
       selfHeal: true
 EOF
 ```
-## Fetching the ArgoCD CUE definitions
-
-```
-go get k8s.io/apimachinery
-go get github.com/argoproj/argo-cd/v2
-cue get go github.com/argoproj/argo-cd/v2/pkg/apis/application/v1alpha1
-```

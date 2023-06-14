@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: guestbook
+  namespace: argocd
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            type: "production"
+  template:
+    metdata:
+      name: "{{name}}-guestbook"
+    spec:
+      project: "my-project"
+      source:
+        repoURL: https://github.com/argoproj/argocd-example-apps/
+        targetRevision: HEAD
+        path: guestbook
+        helm:
+          values: |
+            example: true
+            config: |-
+              {
+                "some_values": [1, 2, 3]
+              }
+      destination:
+        server: "{{server}}"
+        namespace: guestbook
