@@ -13,9 +13,7 @@ applicationSet: [ID=string]: {
 
 	apiVersion: "argoproj.io/v1alpha1"
 	kind:       "ApplicationSet"
-	metadata: {
-		name: ID
-	}
+	metadata: name: ID
 	spec: {
 		generators: [{
 			clusters: selector: matchLabels: "cluster.example.com/\(ID)": "enabled"
@@ -27,7 +25,7 @@ applicationSet: [ID=string]: {
 				source: {
 					repoURL:        "https://github.com/akselleirv/multi-cluster-deploments.git"
 					targetRevision: "HEAD"
-					path:           *"charts/\(_chartNameUnderscored)" | string
+					path:           *"cluster-addons/charts/\(_chartNameUnderscored)" | string
 					helm: {
 						releaseName: string | *ID
 						valueFiles: [

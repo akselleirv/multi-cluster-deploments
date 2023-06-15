@@ -17,7 +17,7 @@ cluster: [ClusterName=string]: #Cluster & {
 	addon: [string]: #addon
 	#addon: {
 		chartName: string
-		values: [string]: _
+		values:    _
 	}
 
 	addon: {

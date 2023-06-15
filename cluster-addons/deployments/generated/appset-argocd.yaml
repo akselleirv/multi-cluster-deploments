@@ -13,7 +13,7 @@ spec:
       source:
         repoURL: https://github.com/akselleirv/multi-cluster-deploments.git
         targetRevision: HEAD
-        path: charts/argocd
+        path: cluster-addons/charts/argocd
         helm:
           releaseName: argocd
           valueFiles:

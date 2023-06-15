@@ -17,7 +17,7 @@ applicationSet: guestbook: {
 			clusters: selector: matchLabels: type: "production"
 		}]
 		template: {
-			metdata: name: "{{name}}-guestbook"
+			metadata: name: "{{name}}-guestbook"
 			spec: {
 				project: "my-project"
 				source: {

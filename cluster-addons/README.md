@@ -148,7 +148,7 @@ spec:
     namespace: argocd
     server: https://kubernetes.default.svc
   source:
-    path: deployments/generated
+    path: cluster-addons/deployments/generated
     repoURL: https://github.com/akselleirv/multi-cluster-deploments.git
     targetRevision: main
   syncPolicy:

@@ -19,7 +19,7 @@ spec:
           valueFiles:
             - generated_values/{{ name }}_grafana_agent_events.yaml
         targetRevision: HEAD
-        path: charts/grafana_agent
+        path: cluster-addons/charts/grafana_agent
       project: default
       syncPolicy:
         automated:
